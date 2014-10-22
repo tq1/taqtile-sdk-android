@@ -170,3 +170,63 @@ AndroidManifest.xml:
         <category android:name="com.taqtile.tq1example" />
       </intent-filter>
     </receiver>
+
+Dialogs
+---------
+
+In order to achieve a reasonable performance with ESRI's Geotrigger℠ Service, the user must enable
+some of the location/connection related device features. To show the user all the missing features 
+create a class that implements the required method of the interface TQUserDialog _showSettingsDialog_.
+How it appears to the user can be customized here based on the alert message.
+
+    public class UserDialog implements TQUserDialog {
+
+    public UserDialog() {}
+
+    @Override
+    public void showSettingsDialog(Context context, String action, int msg) {
+        final Context fContext = context;
+        final String fAction = action;
+        String alert = null;
+        switch(msg) {
+            case 0:
+                //"Please enable background scanning!"
+                alert = context.getString(R.string.geotrigger_alert_0);
+                break;
+            case 1:
+                //"Please enable wifi for accurate locations!"
+                alert = context.getString(R.string.geotrigger_alert_1);
+                break;
+            case 2:
+                //"GPS and Network Location Services are both unavailable!"
+                alert = context.getString(R.string.geotrigger_alert_2);
+                break;
+            case 3:
+                //"GPS Location Services are unavailable!"
+                alert = context.getString(R.string.geotrigger_alert_3);
+                break;
+            case 4:
+                //"Network Location Services are unavailable!"
+                alert = context.getString(R.string.geotrigger_alert_4);
+                break;
+        }
+
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
+        dialogBuilder.setMessage(alert);
+        dialogBuilder.setPositiveButton(context.getString(R.string.geotrigger_alerts_change), 
+                                                      new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                fContext.startActivity(new Intent(fAction));
+            }
+        });
+
+        dialogBuilder.setNegativeButton(context.getString(R.string.geotrigger_alerts_cancel), 
+                                                      new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {}
+        });
+
+        dialogBuilder.show();
+      }
+    }
