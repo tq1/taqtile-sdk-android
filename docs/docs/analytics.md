@@ -11,7 +11,7 @@ protected void onCreate(Bundle savedInstanceState) {
   meta.put("key1", "value1");
   meta.put("key2", "value2");
   TQAnalytics.shared().addCustomContent(meta);
-  }
+}
 ```
 
 ##Sessions count

@@ -3,7 +3,7 @@ Before handling an incoming push notification, you have to restart all the SDK c
 
 ```java
 private void handlePushNotification(Bundle extras) {
-  TQ.shared().init(SA_APP_HOST, SA_APP_KEY, GCM_SENDER_ID, ARCGIS_CLIENT_ID, ARCGIS_DEFAULT_TAGS, new UserDialog());
+  TQ.shared().init(SA_APP_HOST, SA_APP_KEY, GCM_SENDER_ID, GEOTRIGGER_CLIENT_ID, GEOTRIGGER_DEFAULT_TAGS, new UserDialog());
   [...]
 }
 ```
