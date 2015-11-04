@@ -1,2 +1,9 @@
 site_name: TQ1 Android SDK
 theme: readthedocs
+pages:
+- Home: index.md
+- Setup: setup.md
+- Start: start.md
+- Analytics: analytics.md
+- Notifications: notifications.md
+- Settings: settings.md
