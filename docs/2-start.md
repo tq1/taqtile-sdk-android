@@ -1,6 +1,17 @@
-# Start TQ1
+# Start TQ1 without geonotification services
 
-- You can start TQ1 on the `onCreate` step of your launcher activiy:
+In order to start TQ1 you need to call 2 methods. One will give TQ1 all the information needed and the other will start the information gathering. They can be implemented as follows:
+
+```java
+TQ.shared().init(TQ1_KEY, GCM_ID, getApplicationContext());
+TQ.shared().start();
+```
+
+Just remember to replace the `TQ1_KEY` with the app key provided by us and the `GCM_ID` with you Google project number.
+
+# Start TQ1 with ESRI as geolocation service
+
+- You can start TQ1 on the `onCreate` step of your launcher activity:
 
 ```java
 public class MainActivity extends Activity {
@@ -39,7 +50,7 @@ public class MainActivity extends Activity {
 
 - Marshmallow support:
 
-If you intend to support Android Marshmallow (Api level 23), there are noticeable changes in the [permission system](http://developer.android.com/training/permissions/requesting.html). You can ask for authorization using the following method: 
+If you intend to support Android Marshmallow (Api level 23), there are noticeable changes in the [permission system](http://developer.android.com/training/permissions/requesting.html). You can ask for authorization using the following method:
 
 ```java
 if (!TQ.shared().isLocationAuthorized(activity)) {

@@ -3,7 +3,7 @@
 This guide only supports Android Studio projects. If you use another platform, some steps might be different.
 
 - Confirm that your project reads JCenter repositories. You should see this on your main `build.gradle` file
-    
+
 ```java
 allprojects {
   repositories {
@@ -36,6 +36,16 @@ public class MyListenerService extends GcmListenerService {
 }
 ```
 
+The `Bundle` of the above method will have the necessary information of the push notification like the `pid`(push notification id) that will be used to get the push content. For more information check the notifications page of these docs.
+
+In order to find `GcmListenerService` you will need to add GCM (from Google Play Services) as a dependency on you `build.gradle` file, like in the following example:
+
+```java
+dependencies {
+  compile 'com.google.android.gms:play-services-gcm:7.0.0'
+}
+```
+
 This service must also be referenced in your application `Manifest.xml` file (note that the main `android:name` field should match your package name) together with the `GcmReceiver` and the GCM permissions:
 
 ```xml
@@ -45,9 +55,9 @@ This service must also be referenced in your application `Manifest.xml` file (no
   <permission
     android:name="com.example.permission.C2D_MESSAGE"
     android:protectionLevel="signature" />
-  <uses-permission 
+  <uses-permission
     android:name="com.example.permission.C2D_MESSAGE" />
-  
+
   <application ...>
     <receiver
       android:name="com.google.android.gms.gcm.GcmReceiver"
@@ -70,7 +80,10 @@ This service must also be referenced in your application `Manifest.xml` file (no
 </manifest>
 ```
 
-# TQG Geotrigger Service
+# Geolocation services
+If you are going to work with geonotifications, TQ1 will need to work alongside a geolocation services. For now, TQ1 officially supports [ESRI's Geotrigger SDK](https://developers.arcgis.com/geotrigger-service) and TQG. Just remember that they are not mandatory if you won't work with geonotifications. The following sections will describe how to implement each of them.
+
+## TQG Geotrigger Service
 
 - Configure dependency
 
@@ -149,7 +162,7 @@ Add the required permission for location usage:
 </manifest>
 ```
 
-# ESRI Geotrigger Service
+## ESRI Geotrigger Service
 
 - Configure dependency
 
@@ -203,12 +216,12 @@ public final class GeotriggerHelper {
 
     private enum AvailableProviders {GPS, NETWORK, BOTH, NEITHER}
 
-    public static void startGeotriggerService(final Activity activity, String clientId, String senderId, 
+    public static void startGeotriggerService(final Activity activity, String clientId, String senderId,
             String[] tags, String profile, TQUserDialog errorDialog) {
         startGeotriggerService(activity, Integer.MIN_VALUE, clientId, senderId, tags, profile, errorDialog);
     }
 
-    @SuppressLint("NewApi") 
+    @SuppressLint("NewApi")
     public static void startGeotriggerService(final Activity activity, int requestCode, String clientId,
                               String senderId, String[] tags, String profile, TQUserDialog errorDialog) {
         if (activity == null) {
@@ -410,7 +423,7 @@ public class ESRIManager extends Service implements TQGeoTriggerManager, Geotrig
 
     @Override
     public void start() {
-        GeotriggerHelper.startGeotriggerService(mActivity, ESRI_ID, GCM_ID, ESRI_TAGS, 
+        GeotriggerHelper.startGeotriggerService(mActivity, ESRI_ID, GCM_ID, ESRI_TAGS,
                 GeotriggerService.TRACKING_PROFILE_ADAPTIVE, new ErrorDialog());
 
         GeotriggerService.setPushNotificationHandlingEnabled(mActivity, false);
@@ -486,7 +499,7 @@ public class ESRIManager extends Service implements TQGeoTriggerManager, Geotrig
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-        
+
         ...
         <service
             android:name="com.esri.android.geotrigger.GeotriggerService"
